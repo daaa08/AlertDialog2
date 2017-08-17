@@ -22,13 +22,13 @@ public class MainActivity extends AppCompatActivity {
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                show();
+                editAlertShow();
             }
         });
     }
 
-    void show(){
-        final EditText editText = new EditText(this);
+    void editAlertShow(){
+        final EditText editText = new EditText(this);   // editText 삽입
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Title");
@@ -37,17 +37,23 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("입력" , new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(getApplicationContext(),editText.getText().toString(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),editText.getText().toString(),Toast.LENGTH_SHORT).show(); // text값 받아서 로그 남김
 
             }
         });
         builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
+                dialogInterface.dismiss();  // 닫기
             }
         });
-        builder.show();
+        builder.setNeutralButton("나중에", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show(); // alert 창 띄우기
 
     }
 }
