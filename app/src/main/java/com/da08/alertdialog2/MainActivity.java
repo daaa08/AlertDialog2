@@ -1,37 +1,56 @@
 package com.da08.alertdialog2;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
-    Button editBtn;
+    Button editBtn,multiBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        init();
+        setListener();
+    }
+
+    public void init(){
         editBtn = (Button)findViewById(R.id.editBtn);
+        multiBtn = (Button)findViewById(R.id.multiBtn);
+    }
+
+    public void setListener(){
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 editAlertShow();
             }
         });
+
+        multiBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                multiAlertShow();
+            }
+        });
     }
 
-    void editAlertShow(){
+    public void editAlertShow(){
         final EditText editText = new EditText(this);   // editText 삽입
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Title");
+        builder.setTitle("Edit AlertDialog");
         builder.setMessage("blah~blah~");
         builder.setView(editText);
         builder.setPositiveButton("입력" , new DialogInterface.OnClickListener() {
@@ -54,6 +73,50 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         builder.show(); // alert 창 띄우기
+    }
 
+    public void multiAlertShow(){
+//        final String[] items = {"딸기","사과","복숭아","귤"};
+        final List<String> ListItems = new ArrayList<>();
+        ListItems.add("딸기");
+        ListItems.add("사과");
+        ListItems.add("복숭아");
+        ListItems.add("귤");
+        final CharSequence[] items =  ListItems.toArray(new String[ ListItems.size()]);
+        final List SelectedItems = new ArrayList();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Multiple AlertDialog");
+        builder.setMultiChoiceItems(items, null, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i, boolean isChecked) {
+                if(isChecked){  // 사용자가 체크한 경우 리스트에 추가
+                    SelectedItems.add(i);
+                } else if(SelectedItems.contains(i)){  // 이미 리스트에 있는 경우에는 삭제
+                    SelectedItems.remove(Integer.valueOf(i));
+                }
+            }
+        });
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String msg = "";
+                for(int n =0; n < SelectedItems.size(); n ++ ){
+                    int index = (int)SelectedItems.get(n);
+                    msg = msg + "\n" + (n+1) + " : " + ListItems.get(index);
+                    Toast.makeText(getApplicationContext(),
+                            "Total "+ SelectedItems.size() +" Items Selected.\n"+ msg , Toast.LENGTH_LONG)
+                            .show();
+                }
+
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
     }
 }
