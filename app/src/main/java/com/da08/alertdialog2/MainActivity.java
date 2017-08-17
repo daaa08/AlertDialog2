@@ -12,6 +12,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class MainActivity extends AppCompatActivity {
 
     Button editBtn,multiBtn;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
+    // edit alert
     public void editAlertShow(){
         final EditText editText = new EditText(this);   // editText 삽입
 
@@ -75,14 +76,15 @@ public class MainActivity extends AppCompatActivity {
         builder.show(); // alert 창 띄우기
     }
 
+    // multiple alert
     public void multiAlertShow(){
-//        final String[] items = {"딸기","사과","복숭아","귤"};
         final List<String> ListItems = new ArrayList<>();
         ListItems.add("딸기");
         ListItems.add("사과");
         ListItems.add("복숭아");
         ListItems.add("귤");
         final CharSequence[] items =  ListItems.toArray(new String[ ListItems.size()]);
+
         final List SelectedItems = new ArrayList();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -93,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 if(isChecked){  // 사용자가 체크한 경우 리스트에 추가
                     SelectedItems.add(i);
                 } else if(SelectedItems.contains(i)){  // 이미 리스트에 있는 경우에는 삭제
-                    SelectedItems.remove(Integer.valueOf(i));
+                    SelectedItems.remove(Integer.valueOf(i)); // 문자열 변환
                 }
             }
         });
@@ -108,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
                             "Total "+ SelectedItems.size() +" Items Selected.\n"+ msg , Toast.LENGTH_LONG)
                             .show();
                 }
-
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
