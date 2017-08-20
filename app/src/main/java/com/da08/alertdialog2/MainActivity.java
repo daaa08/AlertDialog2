@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button editBtn,multiBtn;
+    Button editBtn,multiBtn,loginBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     public void init(){
         editBtn = (Button)findViewById(R.id.editBtn);
         multiBtn = (Button)findViewById(R.id.multiBtn);
+        loginBtn = (Button)findViewById(R.id.loginBtn);
     }
 
     public void setListener(){
@@ -38,11 +40,16 @@ public class MainActivity extends AppCompatActivity {
                 editAlertShow();
             }
         });
-
         multiBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 multiAlertShow();
+            }
+        });
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loginAlertShow();
             }
         });
     }
@@ -113,6 +120,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    // custom login alert
+    public void loginAlertShow(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();  // fragment 안의 레이아웃 호출
+        View view = inflater.inflate(R.layout.dialog_login, null);
+        builder.setView(view);
+        final EditText email = view.findViewById(R.id.editEmail);
+        final EditText password =  view.findViewById(R.id.editPs);
+
+        builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String strEmail = email.getText().toString();
+                String strPs = password.getText().toString();
+                Toast.makeText(getApplicationContext(),strEmail+"/"+strPs,Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
